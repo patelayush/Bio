@@ -18,4 +18,7 @@ Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-mu
 We would appreciate your feedback on Compose/Web and Kotlin/Wasm in the public Slack channel [#compose-web](https://slack-chats.kotlinlang.org/c/compose-web).
 If you face any issues, please report them on [GitHub](https://github.com/JetBrains/compose-multiplatform/issues).
 
+For adding Material3 colors, design theme using this [link](https://material-foundation.github.io/material-theme-builder/).
+Add resource to project Compose Multiplatform composeApp → src → commonMain → kotlin[commonMain] → ui → theme. Create class Color.kt and Theme.kt
+
 You can open the web application by running the `:composeApp:wasmJsBrowserDevelopmentRun` Gradle task.
