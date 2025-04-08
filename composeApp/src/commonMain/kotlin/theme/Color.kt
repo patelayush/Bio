@@ -1,4 +1,6 @@
 package com.example.compose
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
 val primaryLight = Color(0xFF266A49)
@@ -216,10 +218,5 @@ val surfaceContainerLowDarkHighContrast = Color(0xFF171D19)
 val surfaceContainerDarkHighContrast = Color(0xFF1B211D)
 val surfaceContainerHighDarkHighContrast = Color(0xFF262B27)
 val surfaceContainerHighestDarkHighContrast = Color(0xFF303632)
-
-
-
-
-
 
 

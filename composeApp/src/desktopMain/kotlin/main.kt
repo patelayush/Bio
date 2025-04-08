@@ -6,6 +6,6 @@ fun main() = application {
         onCloseRequest = ::exitApplication,
         title = "Bug-Free Bio",
     ) {
-        App()
+        App(false)
     }
 }
