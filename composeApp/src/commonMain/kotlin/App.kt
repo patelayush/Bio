@@ -1,3 +1,4 @@
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,7 +24,9 @@ fun App(dynamicThemingAvailable: Boolean) {
         dynamic = dynamicThemingAvailable
     ) {
         Scaffold(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background)
                 .padding(
                     top = ScaffoldDefaults.contentWindowInsets.asPaddingValues()
                         .calculateTopPadding(),

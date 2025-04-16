@@ -25,7 +25,6 @@ class MainActivity : ComponentActivity() {
             val window = this.window
             val decorView = window.decorView
             WindowCompat.getInsetsController(window, decorView).isAppearanceLightStatusBars = !isSystemInDarkTheme()
-
             App(dynamicThemingAvailable)
         }
 
