@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.AppBarDefaults
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -29,7 +29,7 @@ fun BottomNavigationBar(
         modifier = Modifier
             .fillMaxWidth()
             .height(56.dp + AppBarDefaults.bottomAppBarWindowInsets.asPaddingValues().calculateBottomPadding()),
-        backgroundColor = MaterialTheme.colors.background,
+        backgroundColor = MaterialTheme.colorScheme.surfaceContainer,
         elevation = AppBarDefaults.BottomAppBarElevation,
         windowInsets = AppBarDefaults.bottomAppBarWindowInsets
     ) {
@@ -41,7 +41,7 @@ fun BottomNavigationBar(
                     Image(
                         painter = painterResource(entry.icon),
                         contentDescription = "",
-                        colorFilter = ColorFilter.tint(color = MaterialTheme.colors.primary)
+                        colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.primary)
                     )
                 },
                 label = {
@@ -50,8 +50,8 @@ fun BottomNavigationBar(
                         fontWeight = if (currentRoute == entry.label) FontWeight.Bold else FontWeight.Normal,
                     )
                 },
-                selectedContentColor = MaterialTheme.colors.primary,
-                unselectedContentColor = MaterialTheme.colors.secondary,
+                selectedContentColor = MaterialTheme.colorScheme.onSurface,
+                unselectedContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                 alwaysShowLabel = false
             )
         }
@@ -67,7 +67,7 @@ enum class NavItem(
         icon = Res.drawable.home,
     ),
     ABOUT(
-        label = "About",
+        label = "Experience",
         icon = Res.drawable.about,
     ),
     CONTACT(

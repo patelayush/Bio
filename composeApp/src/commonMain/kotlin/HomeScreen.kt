@@ -6,12 +6,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
@@ -25,7 +26,7 @@ fun HomeScreen() {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colors.background)
+            .background(MaterialTheme.colorScheme.background)
             .padding(horizontal = 20.dp, vertical = 30.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -40,17 +41,17 @@ fun HomeScreen() {
                 text = "Hi, I'm Ayush Patel",
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth(),
-                color = MaterialTheme.colors.primary,
-                fontSize = MaterialTheme.typography.h4.fontSize
+                color = MaterialTheme.colorScheme.primary,
+                fontSize = MaterialTheme.typography.headlineLarge.fontSize
             )
 
             Text(
                 text = introductionText,
                 textAlign = TextAlign.Start,
                 modifier = Modifier.fillMaxWidth().padding(top = 20.dp),
-                color = MaterialTheme.colors.secondary,
-                fontSize = MaterialTheme.typography.body2.fontSize,
-                lineHeight = 1.3.em,
+                color = MaterialTheme.colorScheme.secondary,
+                fontSize = MaterialTheme.typography.bodyLarge.fontSize,
+                lineHeight = 1.5.em,
             )
         }
     }
