@@ -90,4 +90,11 @@ val experiences = listOf(
         location = "GPA: 3.9/4",
         timePeriod = "Sept 2017 - May 2019",
     ),
+    Experience(
+        year = 2013,
+        company = "Rajiv Gandhi Proudyogiki Vishwavidhyalaya, India",
+        title = "Bachelor's in Computer Science",
+        location = "GPA: 7.8/10",
+        timePeriod = "Sept 2013 - May 2017",
+    ),
 )

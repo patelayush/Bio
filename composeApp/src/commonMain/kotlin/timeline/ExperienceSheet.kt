@@ -80,13 +80,14 @@ fun ExperienceDetails(experience: Experience) {
                     textAlign = TextAlign.Start,
                     color = MaterialTheme.colorScheme.tertiary,
                     fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(end =15.dp).weight(1f)
                 )
                 Text(
                     text = experience.location ?: "",
                     textAlign = TextAlign.Start,
                     color = MaterialTheme.colorScheme.secondary,
-                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                    fontSize = MaterialTheme.typography.titleMedium.fontSize
                 )
             }
 

@@ -2,7 +2,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.AppBarDefaults
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
@@ -14,9 +13,9 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import bug_freebio.composeapp.generated.resources.Res
-import bug_freebio.composeapp.generated.resources.about
 import bug_freebio.composeapp.generated.resources.contact_us
 import bug_freebio.composeapp.generated.resources.home
+import bug_freebio.composeapp.generated.resources.timeline
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 
@@ -66,9 +65,9 @@ enum class NavItem(
         label = "Home",
         icon = Res.drawable.home,
     ),
-    ABOUT(
+    EXPERIENCE(
         label = "Experience",
-        icon = Res.drawable.about,
+        icon = Res.drawable.timeline,
     ),
     CONTACT(
         label = "Contact",

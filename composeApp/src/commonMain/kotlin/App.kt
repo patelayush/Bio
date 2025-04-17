@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.compose.BioTheme
+import contact.ContactScreen
 import timeline.TimelineScreen
 
 @Composable
@@ -52,9 +53,8 @@ fun App(dynamicThemingAvailable: Boolean) {
                 ) {
                     when (currentRoute.value) {
                         NavItem.HOME.label -> HomeScreen()
-                        NavItem.ABOUT.label -> TimelineScreen()
-                        NavItem.CONTACT.label -> { /*TODO()*/
-                        }
+                        NavItem.EXPERIENCE.label -> TimelineScreen()
+                        NavItem.CONTACT.label -> ContactScreen()
                     }
                 }
             }
