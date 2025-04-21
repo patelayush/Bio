@@ -13,13 +13,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import bug_freebio.composeapp.generated.resources.Res
+import bug_freebio.composeapp.generated.resources.ic_mail
 import bug_freebio.composeapp.generated.resources.linkedin_logo
-import bug_freebio.composeapp.generated.resources.mail
 import email
 import linkedinLink
 import org.jetbrains.compose.resources.painterResource
@@ -40,11 +39,11 @@ fun ContactScreen() {
             fontSize = MaterialTheme.typography.headlineLarge.fontSize
         )
         Row(
-            modifier = Modifier.fillMaxWidth().padding(top=30.dp),
+            modifier = Modifier.fillMaxWidth().padding(top = 30.dp),
             horizontalArrangement = Arrangement.spacedBy(15.dp)
-        ){
+        ) {
             Icon(
-                painter = painterResource(Res.drawable.mail),
+                painter = painterResource(Res.drawable.ic_mail),
                 modifier = Modifier.size(25.dp),
                 tint = MaterialTheme.colorScheme.secondary,
                 contentDescription = "Email"
@@ -56,9 +55,9 @@ fun ContactScreen() {
             )
         }
         Row(
-            modifier = Modifier.fillMaxWidth().padding(top=30.dp),
+            modifier = Modifier.fillMaxWidth().padding(top = 30.dp),
             horizontalArrangement = Arrangement.spacedBy(15.dp)
-        ){
+        ) {
             Icon(
                 painter = painterResource(Res.drawable.linkedin_logo),
                 modifier = Modifier.size(25.dp),

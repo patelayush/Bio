@@ -13,9 +13,9 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import bug_freebio.composeapp.generated.resources.Res
-import bug_freebio.composeapp.generated.resources.contact_us
-import bug_freebio.composeapp.generated.resources.home
-import bug_freebio.composeapp.generated.resources.timeline
+import bug_freebio.composeapp.generated.resources.ic_contact_us
+import bug_freebio.composeapp.generated.resources.ic_home
+import bug_freebio.composeapp.generated.resources.ic_timeline
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 
@@ -63,14 +63,14 @@ enum class NavItem(
 ) {
     HOME(
         label = "Home",
-        icon = Res.drawable.home,
+        icon = Res.drawable.ic_home,
     ),
     EXPERIENCE(
         label = "Experience",
-        icon = Res.drawable.timeline,
+        icon = Res.drawable.ic_timeline,
     ),
     CONTACT(
         label = "Contact",
-        icon = Res.drawable.contact_us,
+        icon = Res.drawable.ic_contact_us,
     ),
 }
