@@ -23,10 +23,18 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 Builds web application
 
-### android web_run
+### android copy
 
 ```sh
-[bundle exec] fastlane android web_run
+[bundle exec] fastlane android copy
+```
+
+Copy files from one directory to another
+
+### android web
+
+```sh
+[bundle exec] fastlane android web
 ```
 
 Runs web application
