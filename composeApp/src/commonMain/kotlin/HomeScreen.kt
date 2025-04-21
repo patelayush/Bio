@@ -125,7 +125,8 @@ fun HomeScreen() {
             Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
                 PdfColumn(
                     url = repo + resume_url,
-                    modifier = Modifier.padding(top = 100.dp).align(Alignment.Center)
+                    modifier = Modifier.padding(top = 100.dp)
+                        .fillMaxSize()
                         .background(MaterialTheme.colorScheme.background)
                 )
                 Box(
@@ -150,6 +151,7 @@ fun HomeScreen() {
             PdfColumn(
                 url = repo + resume_url
             )
+            showResume = false
         }
     }
 }
