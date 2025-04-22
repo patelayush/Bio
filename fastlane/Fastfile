@@ -26,6 +26,7 @@ platform :android do
   lane :copy do
     dest = '/Users/patel/AndroidStudioProjects/Bug-Free-Bio/docs'
     src = '/Users/patel/AndroidStudioProjects/Bug-Free-Bio/composeApp/build/dist/wasmJs/productionExecutable'
+    srcPolicy = '/Users/patel/AndroidStudioProjects/Bug-Free-Bio/PrivacyPolicy.html'
 
     # Ensure destination directory exists
     FileUtils.mkdir_p(dest)
@@ -35,6 +36,7 @@ platform :android do
 
     # Copy all files from source to destination
     FileUtils.cp_r(Dir["#{src}/*"], dest)
+    FileUtils.cp_r(Dir["#{srcPolicy}"], dest)
 
     UI.success("Files copied from #{src} to #{dest}")
   end
