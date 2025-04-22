@@ -7,28 +7,11 @@ import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
-    alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.compose.compiler)
 }
 
 kotlin {
-    @OptIn(ExperimentalWasmDsl::class)
-    wasmJs {
-        moduleName = "composeApp"
-        browser {
-            commonWebpackConfig {
-                outputFileName = "composeApp.js"
-                devServer = (devServer ?: KotlinWebpackConfig.DevServer()).apply {
-                    static = (static ?: mutableListOf()).apply {
-                        // Serve sources to debug inside browser
-                        add(project.projectDir.path)
-                    }
-                }
-            }
-        }
-        binaries.executable()
-    }
-    
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
@@ -48,7 +31,27 @@ kotlin {
             isStatic = true
         }
     }
-    
+
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmJs {
+        moduleName = "composeApp"
+        browser {
+            val rootDirPath = project.rootDir.path
+            val projectDirPath = project.projectDir.path
+            commonWebpackConfig {
+                outputFileName = "composeApp.js"
+                devServer = (devServer ?: KotlinWebpackConfig.DevServer()).apply {
+                    static = (static ?: mutableListOf()).apply {
+                        // Serve sources to debug inside browser
+                        add(rootDirPath)
+                        add(projectDirPath)
+                    }
+                }
+            }
+        }
+        binaries.executable()
+    }
+
     sourceSets {
         val desktopMain by getting
         
@@ -68,6 +71,7 @@ kotlin {
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
+            implementation(libs.kotlinx.coroutines.swing)
         }
     }
 }
