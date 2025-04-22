@@ -36,8 +36,8 @@ fun TimelineScreen() {
         itemsIndexed(experiences) { index, item ->
             TimelineNode(
                 modifier = Modifier.padding(
-                    top = if (index == 0) 30.dp else 0.dp,
-                    bottom = if (index == experiences.lastIndex) 30.dp else 0.dp
+                    top = if (index == 0) 60.dp else 0.dp,
+                    bottom = if (index == experiences.lastIndex) 60.dp else 0.dp
                 ),
                 experience = item,
                 circleParameters = CircleParameters(

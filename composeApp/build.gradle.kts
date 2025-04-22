@@ -114,6 +114,7 @@ android {
 }
 dependencies {
     implementation(libs.androidx.material3.android)
+    implementation(libs.androidx.foundation.layout.android)
 }
 
 compose.desktop {

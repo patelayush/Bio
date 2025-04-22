@@ -97,4 +97,7 @@ val experiences = listOf(
         location = "GPA: 7.8/10",
         timePeriod = "Sept 2013 - May 2017",
     ),
+    Experience(
+        year = 1995
+    )
 )

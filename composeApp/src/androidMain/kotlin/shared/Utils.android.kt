@@ -1,5 +1,9 @@
 package shared
 
+import android.app.Application
+import android.content.Context
+import android.content.Intent
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,9 +12,27 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.core.net.toUri
 import com.rizzi.bouquet.ResourceType
 import com.rizzi.bouquet.VerticalPDFReader
 import com.rizzi.bouquet.rememberVerticalPdfReaderState
+import email
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import model.Message
+
+actual object AppContext{
+    private lateinit var application: Application
+
+    fun setUp(context: Context) {
+        application = context as Application
+    }
+
+    fun get(): Context {
+        if (::application.isInitialized.not()) throw Exception("Application context isn't initialized")
+        return application.applicationContext
+    }
+}
 
 actual fun platform(): String {
     return "android"
@@ -46,5 +68,27 @@ actual fun PdfColumn(url: String, modifier: Modifier) {
             state = pdfState,
             modifier = modifier,
         )
+    }
+}
+
+actual suspend fun sendEmail(message: Message) {
+    val context = AppContext.get()
+
+    return withContext(Dispatchers.IO) {
+        try {
+            val intent = Intent(Intent.ACTION_SENDTO).apply {
+                data = "mailto:".toUri() // only email apps should handle this
+                putExtra(Intent.EXTRA_EMAIL, arrayOf(email))
+                putExtra(Intent.EXTRA_SUBJECT, message.getSubject())
+                putExtra(Intent.EXTRA_TEXT, message.body)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            if (intent.resolveActivity(context.packageManager) != null) {
+                context.startActivity(intent)
+            }
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 }

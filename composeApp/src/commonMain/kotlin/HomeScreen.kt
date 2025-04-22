@@ -2,9 +2,12 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -37,6 +40,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import shared.PdfColumn
 import shared.platform
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun HomeScreen() {
     var showResume by rememberSaveable { mutableStateOf(false) }
@@ -45,7 +49,7 @@ fun HomeScreen() {
         Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
-            .padding(horizontal = 20.dp, vertical = 30.dp)
+            .padding(horizontal = 20.dp)
     ) {
         LazyColumn(
             modifier = Modifier
@@ -56,7 +60,10 @@ fun HomeScreen() {
                 Image(
                     painter = painterResource(Res.drawable.profile_pic),
                     contentDescription = "profile-pic",
-                    modifier = Modifier.width(200.dp).clip(CircleShape).padding(bottom = 30.dp)
+                    modifier = Modifier
+                        .padding(top = 30.dp, bottom = 30.dp)
+                        .width(200.dp)
+                        .clip(CircleShape)
                 )
 
                 Text(
@@ -87,10 +94,33 @@ fun HomeScreen() {
                     lineHeight = 1.5.em,
                 )
             }
+
+            item {
+                Text(
+                    text = "Skilled in",
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.primary,
+                    fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                    letterSpacing = 1.2.sp,
+                    modifier = Modifier.fillMaxWidth().padding(top = 40.dp),
+                )
+            }
+
+            item {
+                SkillSection(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 20.dp)
+                )
+            }
+
+            item {
+                Spacer(Modifier.height(120.dp))
+            }
         }
 
         FloatingActionButton(
-            modifier = Modifier.align(Alignment.BottomEnd),
+            modifier = Modifier.padding(bottom = 30.dp).align(Alignment.BottomEnd),
             backgroundColor = MaterialTheme.colorScheme.tertiaryContainer,
             onClick = {
                 showResume = true
@@ -112,9 +142,10 @@ fun HomeScreen() {
                         tint = MaterialTheme.colorScheme.onTertiaryContainer
                     )
                     Text(
-                        text = "RESUME",
+                        text = "Resume",
                         color = MaterialTheme.colorScheme.onTertiaryContainer,
-                        fontSize = MaterialTheme.typography.titleMedium.fontSize
+                        fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                        fontWeight = FontWeight.SemiBold
                     )
                 }
             }
