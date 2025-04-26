@@ -13,3 +13,6 @@ expect fun platform(): String
 expect fun PdfColumn(url: String, modifier: Modifier = Modifier)
 
 expect suspend fun sendEmail(message: Message)
+
+@Composable
+expect fun isTabletVersion(): Boolean

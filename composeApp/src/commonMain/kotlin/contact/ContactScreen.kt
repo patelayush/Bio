@@ -6,19 +6,16 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
@@ -56,8 +53,18 @@ import org.jetbrains.compose.resources.painterResource
 import shared.sendEmail
 
 @Composable
-fun ContactScreen() {
+fun ContactScreen(modifier: Modifier = Modifier) {
 
+    Column(
+        modifier = modifier.padding(horizontal = 30.dp).verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        ContactSection(Modifier.padding(top = 40.dp))
+    }
+}
+
+@Composable
+fun ContactSection(modifier: Modifier = Modifier) {
     var senderName by remember { mutableStateOf(TextFieldValue("")) }
     var senderEmail by remember { mutableStateOf(TextFieldValue("")) }
     var senderMessage by remember { mutableStateOf(TextFieldValue("")) }
@@ -77,183 +84,169 @@ fun ContactScreen() {
         return isSenderNameValid && isSenderEmailValid && isSenderMessageValid
     }
 
-    LazyColumn(
-        modifier = Modifier.fillMaxSize().padding(horizontal = 30.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(20.dp)
+    Text(
+        text = "Get in Touch",
+        textAlign = TextAlign.Center,
+        modifier = modifier.fillMaxWidth(),
+        color = MaterialTheme.colorScheme.primary,
+        letterSpacing = 1.2.sp,
+        fontWeight = FontWeight.SemiBold,
+        style = MaterialTheme.typography.headlineLarge
+    )
+
+    OutlinedCard(
+        modifier = Modifier.fillMaxWidth().padding(top = 30.dp),
+        shape = RoundedCornerShape(15.dp),
+        colors = CardDefaults.outlinedCardColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.primary
+        ),
+        border = BorderStroke(width = 1.dp, color = MaterialTheme.colorScheme.secondary)
     ) {
-        item {
-            Text(
-                text = "Get in Touch",
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(top = 30.dp).fillMaxWidth(),
-                color = MaterialTheme.colorScheme.primary,
-                letterSpacing = 1.2.sp,
-                fontWeight = FontWeight.SemiBold,
-                fontSize = MaterialTheme.typography.headlineLarge.fontSize
+        Column(
+            Modifier.padding(horizontal = 15.dp, vertical = 30.dp),
+            horizontalAlignment = Alignment.End
+        ) {
+            CustomTextField(
+                modifier = Modifier,
+                text = senderName,
+                label = "Your Name",
+                errorText = "Please enter your name.",
+                onValueChange = {
+                    senderName = it
+                    isSenderNameValid = it.text.isNotEmpty()
+                    hasUserInteracted = true
+                },
+                isError = !isSenderNameValid
             )
-        }
 
-        item {
-            OutlinedCard(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(15.dp),
-                colors = CardDefaults.outlinedCardColors(
-                    containerColor = MaterialTheme.colorScheme.surface,
-                    contentColor = MaterialTheme.colorScheme.primary
-                ),
-                border = BorderStroke(width = 1.dp, color = MaterialTheme.colorScheme.secondary)
-            ) {
-                Column(
-                    Modifier.padding(horizontal = 15.dp, vertical = 30.dp),
-                    horizontalAlignment = Alignment.End
-                ) {
-                    CustomTextField(
-                        modifier = Modifier,
-                        text = senderName,
-                        label = "Your Name",
-                        errorText = "Please enter your name.",
-                        onValueChange = {
-                            senderName = it
-                            isSenderNameValid = it.text.isNotEmpty()
-                            hasUserInteracted = true
-                        },
-                        isError = !isSenderNameValid
-                    )
-
-                    CustomTextField(
-                        modifier = Modifier.padding(top = 20.dp),
-                        text = senderEmail,
-                        label = "Your Email",
-                        errorText = "Please enter your email.",
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                        onValueChange = {
-                            senderEmail = it
-                            isSenderEmailValid = it.text.isNotEmpty()
-                            hasUserInteracted = true
-                        },
-                        leadingIcon = {
-                            Icon(
-                                painter = painterResource(Res.drawable.ic_mail),
-                                contentDescription = "Email",
-                                tint = if (!isSenderEmailValid) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.secondary,
-                            )
-                        },
-                        isError = !isSenderEmailValid
-                    )
-
-                    CustomTextField(
-                        modifier = Modifier.padding(top = 20.dp).heightIn(min = 150.dp),
-                        text = senderMessage,
-                        label = "Message",
-                        errorText = "Please enter your message.",
-                        onValueChange = {
-                            senderMessage = it
-                            isSenderMessageValid = it.text.isNotEmpty()
-                            hasUserInteracted = true
-                        },
-                        isError = !isSenderMessageValid,
-                        singleLine = false,
-                    )
-
-                    Button(
-                        enabled = isEnabled,
-                        modifier = Modifier.padding(top = 20.dp),
-                        onClick = {
-                            if (isValidForm()) {
-                                scope.launch {
-                                    sendEmail(
-                                        Message(
-                                            name = senderName.text,
-                                            email = senderEmail.text,
-                                            body = senderMessage.text
-                                        )
-                                    )
-                                }
-                            }
-                        },
-                        shape = RoundedCornerShape(10.dp),
-                        elevation = ButtonDefaults.elevation(5.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = MaterialTheme.colorScheme.tertiaryContainer,
-                            disabledBackgroundColor = MaterialTheme.colorScheme.tertiaryContainer.copy(
-                                alpha = 0.1f
-                            )
-                        ),
-                        content = {
-                            Text(
-                                text = "Send Message",
-                                color = MaterialTheme.colorScheme.onTertiaryContainer,
-                                fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                                modifier = Modifier.padding(vertical = 5.dp, horizontal = 10.dp),
-                                fontWeight = FontWeight.SemiBold
-                            )
-                        }
-                    )
-                }
-            }
-        }
-
-        item {
-            Column {
-                Text(
-                    text = "Or, you can reach out to me via",
-                    color = MaterialTheme.colorScheme.primary,
-                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                    modifier = Modifier.fillMaxWidth().padding(top = 20.dp),
-                    fontWeight = FontWeight.SemiBold
-                )
-
-                Row(
-                    modifier = Modifier.fillMaxWidth().padding(top = 10.dp),
-                    horizontalArrangement = Arrangement.spacedBy(15.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
+            CustomTextField(
+                modifier = Modifier.padding(top = 20.dp),
+                text = senderEmail,
+                label = "Your Email",
+                errorText = "Please enter your email.",
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                onValueChange = {
+                    senderEmail = it
+                    isSenderEmailValid = it.text.isNotEmpty()
+                    hasUserInteracted = true
+                },
+                leadingIcon = {
                     Icon(
                         painter = painterResource(Res.drawable.ic_mail),
-                        modifier = Modifier.height(MaterialTheme.typography.titleSmall.fontSize.value.dp),
-                        tint = MaterialTheme.colorScheme.secondary,
-                        contentDescription = "Email"
+                        contentDescription = "Email",
+                        tint = if (!isSenderEmailValid) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.secondary,
                     )
-                    Text(
-                        text = email,
-                        color = MaterialTheme.colorScheme.secondary,
-                        fontSize = MaterialTheme.typography.titleSmall.fontSize,
-                        textDecoration = TextDecoration.Underline,
-                        modifier = Modifier.clickable {
-                            scope.launch {
-                                sendEmail(Message())
-                            }
-                        }
-                    )
-                }
-                Row(
-                    modifier = Modifier.fillMaxWidth().padding(top = 10.dp),
-                    horizontalArrangement = Arrangement.spacedBy(15.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Image(
-                        painter = painterResource(Res.drawable.linkedin_logo),
-                        modifier = Modifier.height(MaterialTheme.typography.titleSmall.fontSize.value.dp),
-                        contentDescription = "LinkedIn",
-                    )
-                    Text(
-                        text = linkedinLink,
-                        fontSize = MaterialTheme.typography.titleSmall.fontSize,
-                        color = MaterialTheme.colorScheme.secondary,
-                        textDecoration = TextDecoration.Underline,
-                        modifier = Modifier.clickable {
-                            uriHandler.openUri(linkedinLink)
-                        }
-                    )
-                }
-            }
-        }
+                },
+                isError = !isSenderEmailValid
+            )
 
-        item {
-            Spacer(Modifier.height(50.dp))
+            CustomTextField(
+                modifier = Modifier.padding(top = 20.dp).heightIn(min = 150.dp),
+                text = senderMessage,
+                label = "Message",
+                errorText = "Please enter your message.",
+                onValueChange = {
+                    senderMessage = it
+                    isSenderMessageValid = it.text.isNotEmpty()
+                    hasUserInteracted = true
+                },
+                isError = !isSenderMessageValid,
+                singleLine = false,
+            )
+
+            Button(
+                enabled = isEnabled,
+                modifier = Modifier.padding(top = 20.dp),
+                onClick = {
+                    if (isValidForm()) {
+                        scope.launch {
+                            sendEmail(
+                                Message(
+                                    name = senderName.text,
+                                    email = senderEmail.text,
+                                    body = senderMessage.text
+                                )
+                            )
+                        }
+                    }
+                },
+                shape = RoundedCornerShape(10.dp),
+                elevation = ButtonDefaults.elevation(5.dp),
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = MaterialTheme.colorScheme.tertiaryContainer,
+                    disabledBackgroundColor = MaterialTheme.colorScheme.tertiaryContainer.copy(
+                        alpha = 0.1f
+                    )
+                ),
+                content = {
+                    Text(
+                        text = "Send Message",
+                        color = MaterialTheme.colorScheme.onTertiaryContainer,
+                        fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                        modifier = Modifier.padding(vertical = 5.dp, horizontal = 10.dp),
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
+            )
         }
     }
+
+    Column(Modifier.padding(top = 20.dp)) {
+        Text(
+            text = "Or, you can reach out to me via",
+            color = MaterialTheme.colorScheme.primary,
+            fontSize = MaterialTheme.typography.titleMedium.fontSize,
+            modifier = Modifier.fillMaxWidth().padding(top = 20.dp),
+            fontWeight = FontWeight.SemiBold
+        )
+
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(top = 10.dp),
+            horizontalArrangement = Arrangement.spacedBy(15.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                painter = painterResource(Res.drawable.ic_mail),
+                modifier = Modifier.height(MaterialTheme.typography.titleSmall.fontSize.value.dp),
+                tint = MaterialTheme.colorScheme.secondary,
+                contentDescription = "Email"
+            )
+            Text(
+                text = email,
+                color = MaterialTheme.colorScheme.secondary,
+                fontSize = MaterialTheme.typography.titleSmall.fontSize,
+                textDecoration = TextDecoration.Underline,
+                modifier = Modifier.clickable {
+                    scope.launch {
+                        sendEmail(Message())
+                    }
+                }
+            )
+        }
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(top = 10.dp),
+            horizontalArrangement = Arrangement.spacedBy(15.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Image(
+                painter = painterResource(Res.drawable.linkedin_logo),
+                modifier = Modifier.height(MaterialTheme.typography.titleSmall.fontSize.value.dp),
+                contentDescription = "LinkedIn",
+            )
+            Text(
+                text = linkedinLink,
+                fontSize = MaterialTheme.typography.titleSmall.fontSize,
+                color = MaterialTheme.colorScheme.secondary,
+                textDecoration = TextDecoration.Underline,
+                modifier = Modifier.clickable {
+                    uriHandler.openUri(linkedinLink)
+                }
+            )
+        }
+    }
+
+    Spacer(Modifier.height(50.dp))
 }
 
 @Composable

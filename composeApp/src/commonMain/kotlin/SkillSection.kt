@@ -1,7 +1,6 @@
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.material3.Card
@@ -30,7 +29,7 @@ val skills = listOf(
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun SkillSection(modifier: Modifier = Modifier){
+fun SkillSection(modifier: Modifier = Modifier) {
     FlowRow(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(10.dp),
@@ -53,6 +52,7 @@ fun SkillChip(skill: String) {
         )
     ) {
         Text(
+            style = MaterialTheme.typography.labelLarge,
             text = skill,
             modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
             color = skillColorSet.second

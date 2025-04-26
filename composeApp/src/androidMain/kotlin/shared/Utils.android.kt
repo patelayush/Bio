@@ -3,7 +3,7 @@ package shared
 import android.app.Application
 import android.content.Context
 import android.content.Intent
-import androidx.activity.ComponentActivity
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,6 +12,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.core.net.toUri
 import com.rizzi.bouquet.ResourceType
 import com.rizzi.bouquet.VerticalPDFReader
@@ -21,7 +22,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import model.Message
 
-actual object AppContext{
+actual object AppContext {
     private lateinit var application: Application
 
     fun setUp(context: Context) {
@@ -90,5 +91,15 @@ actual suspend fun sendEmail(message: Message) {
         } catch (e: Exception) {
             Result.failure(e)
         }
+    }
+}
+
+@Composable
+actual fun isTabletVersion(): Boolean {
+    val configuration = LocalConfiguration.current
+    return if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        configuration.screenWidthDp > 840
+    } else {
+        configuration.screenWidthDp > 600
     }
 }

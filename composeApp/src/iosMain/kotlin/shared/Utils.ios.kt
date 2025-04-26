@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.UIKitView
 import email
-import kotlinx.cinterop.ExperimentalForeignApi
 import model.Message
 import platform.Foundation.NSError
 import platform.Foundation.NSURL
@@ -14,6 +13,8 @@ import platform.MessageUI.MFMailComposeViewControllerDelegateProtocol
 import platform.PDFKit.PDFDocument
 import platform.PDFKit.PDFView
 import platform.UIKit.UIApplication
+import platform.UIKit.UIDevice
+import platform.UIKit.UIUserInterfaceIdiomPad
 import platform.darwin.NSObject
 import kotlin.Result.Companion.failure
 import kotlin.coroutines.resume
@@ -33,7 +34,8 @@ actual fun PdfColumn(url: String, modifier: Modifier) {
     val view = PDFView().apply {
         this.document = document
         this.autoScales = true
-        this.displayMode = 1 // Represent Enum entry 1 ( Single Page Continuous ) from PDFDisplayMode
+        this.displayMode =
+            1 // Represent Enum entry 1 ( Single Page Continuous ) from PDFDisplayMode
         this.displayDirection = 0 // Represent Enum entry 1 ( Horizontal ) from PDFDisplayDirection
     }
 
@@ -43,7 +45,7 @@ actual fun PdfColumn(url: String, modifier: Modifier) {
     )
 }
 
-actual suspend fun sendEmail(message: Message){
+actual suspend fun sendEmail(message: Message) {
     suspendCoroutine<Result<Unit>> { continuation ->
         if (!MFMailComposeViewController.canSendMail()) {
             continuation.resume(failure(Exception("Mail services are not available")))
@@ -107,4 +109,9 @@ actual suspend fun sendEmail(message: Message){
             println("Email sent successfully")
         }
     }
+}
+
+@Composable
+actual fun isTabletVersion(): Boolean {
+    return UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad
 }

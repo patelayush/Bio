@@ -35,7 +35,9 @@ fun BottomNavigationBar(
         NavItem.entries.forEach { entry ->
             BottomNavigationItem(
                 selected = currentRoute == entry.label,
-                onClick = { onItemClick(entry.label) },
+                onClick = {
+                    onItemClick(entry.label)
+                          },
                 icon = {
                     Image(
                         painter = painterResource(entry.icon),

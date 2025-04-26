@@ -1,7 +1,9 @@
 package shared
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalWindowInfo
 import model.Message
 import java.awt.Desktop
 import java.net.URI
@@ -33,4 +35,13 @@ actual fun PdfColumn(url: String, modifier: Modifier) {
 
 actual suspend fun sendEmail(message: Message) {
     TODO("Not yet implemented")
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+actual fun isTabletVersion(): Boolean {
+    val windowInfo = LocalWindowInfo.current
+    val screenWidth = windowInfo.containerSize.width
+    println("screenWidth desktop: $screenWidth")
+    return true
 }

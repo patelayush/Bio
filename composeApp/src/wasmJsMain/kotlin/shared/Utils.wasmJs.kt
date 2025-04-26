@@ -1,7 +1,9 @@
 package shared
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalWindowInfo
 import email
 import kotlinx.browser.window
 import model.Message
@@ -18,7 +20,7 @@ actual fun PdfColumn(url: String, modifier: Modifier) {
     window.open(url)
 }
 
-actual suspend fun sendEmail(message: Message){
+actual suspend fun sendEmail(message: Message) {
     try {
         val params = URLSearchParams()
         params.append("to", email)
@@ -31,4 +33,12 @@ actual suspend fun sendEmail(message: Message){
     } catch (e: Exception) {
         Result.failure(e)
     }
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+actual fun isTabletVersion(): Boolean {
+    val windowInfo = LocalWindowInfo.current
+    val screenWidth = windowInfo.containerSize.width
+    return screenWidth > 800
 }

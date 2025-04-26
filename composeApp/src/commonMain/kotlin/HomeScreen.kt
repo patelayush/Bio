@@ -2,21 +2,23 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
-import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,8 +28,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
@@ -35,86 +40,96 @@ import bug_freebio.composeapp.generated.resources.Res
 import bug_freebio.composeapp.generated.resources.ic_close
 import bug_freebio.composeapp.generated.resources.ic_file
 import bug_freebio.composeapp.generated.resources.profile_pic
+import contact.ContactSection
+import model.experiences
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import shared.PdfColumn
 import shared.platform
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    modifier: Modifier = Modifier,
+    isCompactModeEnabledForWeb: Boolean = false
+) {
+
     var showResume by rememberSaveable { mutableStateOf(false) }
 
     Box(
-        Modifier
+        modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
             .padding(horizontal = 20.dp)
     ) {
-        LazyColumn(
+        Column(
             modifier = Modifier
-                .fillMaxSize(),
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            item {
-                Image(
-                    painter = painterResource(Res.drawable.profile_pic),
-                    contentDescription = "profile-pic",
-                    modifier = Modifier
-                        .padding(top = 30.dp, bottom = 30.dp)
-                        .width(200.dp)
-                        .clip(CircleShape)
-                )
+            Image(
+                painter = painterResource(Res.drawable.profile_pic),
+                contentDescription = "profile-pic",
+                modifier = Modifier
+                    .padding(top = 30.dp, bottom = 30.dp)
+                    .width(200.dp)
+                    .clip(CircleShape)
+            )
 
-                Text(
-                    text = "Hi, I'm Ayush Patel",
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth(),
-                    color = MaterialTheme.colorScheme.primary,
-                    letterSpacing = 1.2.sp,
-                    fontSize = MaterialTheme.typography.headlineLarge.fontSize
-                )
+            Text(
+                text = "Hi, I'm Ayush Patel",
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth(),
+                color = MaterialTheme.colorScheme.primary,
+                letterSpacing = 1.2.sp,
+                fontWeight = FontWeight.SemiBold,
+                style = MaterialTheme.typography.headlineLarge
+            )
 
-                Text(
-                    text = "(Your Go-To Android Geek)",
-                    textAlign = TextAlign.Center,
-                    color = MaterialTheme.colorScheme.tertiary,
-                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                    letterSpacing = 1.2.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.fillMaxWidth().padding(top = 10.dp),
-                )
+            Text(
+                text = "(Your Go-To Android Geek)",
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.tertiary,
+                fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                letterSpacing = 1.2.sp,
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.fillMaxWidth().padding(top = 10.dp),
+            )
 
-                Text(
-                    text = introductionText,
-                    textAlign = TextAlign.Start,
-                    modifier = Modifier.fillMaxWidth().padding(top = 30.dp),
-                    color = MaterialTheme.colorScheme.secondary,
-                    fontSize = MaterialTheme.typography.bodyLarge.fontSize,
-                    lineHeight = 1.5.em,
-                )
-            }
+            Text(
+                text =
+                    buildAnnotatedString {
+                        append(introductionText1)
+                        withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
+                            append(experiences[1].title ?: "Android Engineer")
+                        }
+                        append(introductionText2)
+                    },
+                textAlign = TextAlign.Start,
+                modifier = Modifier.fillMaxWidth().padding(top = 30.dp),
+                color = MaterialTheme.colorScheme.secondary,
+                fontSize = MaterialTheme.typography.bodyLarge.fontSize,
+                lineHeight = 1.5.em,
+            )
 
-            item {
-                Text(
-                    text = "Skilled in",
-                    textAlign = TextAlign.Center,
-                    color = MaterialTheme.colorScheme.primary,
-                    fontSize = MaterialTheme.typography.titleLarge.fontSize,
-                    letterSpacing = 1.2.sp,
-                    modifier = Modifier.fillMaxWidth().padding(top = 40.dp),
-                )
-            }
+            Text(
+                text = "Skilled in",
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.primary,
+                style = if (isCompactModeEnabledForWeb) MaterialTheme.typography.headlineLarge else MaterialTheme.typography.headlineSmall,
+                letterSpacing = 1.2.sp,
+                modifier = Modifier.fillMaxWidth().padding(top = 40.dp),
+            )
 
-            item {
-                SkillSection(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 20.dp)
-                )
-            }
+            SkillSection(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 20.dp)
+            )
 
-            item {
+            if (isCompactModeEnabledForWeb) {
+                ContactSection(Modifier.padding(top = 50.dp))
+            } else {
                 Spacer(Modifier.height(120.dp))
             }
         }
@@ -128,7 +143,7 @@ fun HomeScreen() {
             shape = RoundedCornerShape(15.dp),
             content = {
                 Row(
-                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 5.dp),
+                    modifier = Modifier.padding(horizontal = 10.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
@@ -136,6 +151,7 @@ fun HomeScreen() {
                         contentDescription = "Resume",
                         modifier = Modifier
                             .padding(end = 5.dp)
+                            .size(20.dp)
                             .clickable {
                                 showResume = !showResume
                             },
