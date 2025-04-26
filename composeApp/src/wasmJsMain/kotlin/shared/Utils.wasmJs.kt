@@ -24,7 +24,7 @@ actual suspend fun sendEmail(message: Message) {
     try {
         val params = URLSearchParams()
         params.append("to", email)
-        params.append("subject", message.getSubject())
+        params.append("subject", message.getSubject().replace(" ", "%20"))
         params.append("body", message.body ?: "")
 
         val mailtoLink = "mailto:?${params}"
@@ -40,5 +40,5 @@ actual suspend fun sendEmail(message: Message) {
 actual fun isTabletVersion(): Boolean {
     val windowInfo = LocalWindowInfo.current
     val screenWidth = windowInfo.containerSize.width
-    return screenWidth > 800
+    return screenWidth > 1300
 }

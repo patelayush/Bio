@@ -24,6 +24,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -48,11 +49,16 @@ fun App(dynamicThemingAvailable: Boolean) {
     var currentRoute by rememberSaveable { mutableStateOf(NavItem.HOME.label) }
     var isCompactViewEnabledForWeb by rememberSaveable { mutableStateOf(false) }
 
+    if(!isTabletVersion()) {
+        isCompactViewEnabledForWeb = false
+    }
+
     BioTheme(
         dynamic = dynamicThemingAvailable
     ) {
         Scaffold(
             modifier = Modifier
+                .animateContentSize(tween())
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
                 .padding(

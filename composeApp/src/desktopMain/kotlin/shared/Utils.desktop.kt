@@ -37,11 +37,7 @@ actual suspend fun sendEmail(message: Message) {
     TODO("Not yet implemented")
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 actual fun isTabletVersion(): Boolean {
-    val windowInfo = LocalWindowInfo.current
-    val screenWidth = windowInfo.containerSize.width
-    println("screenWidth desktop: $screenWidth")
     return true
 }
