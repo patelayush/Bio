@@ -1,12 +1,15 @@
 package timeline
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.rememberScrollableState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,7 +29,7 @@ fun TimelineScreen(
 ) {
     Column(
         modifier
-            .fillMaxSize()
+            .fillMaxWidth()
             .background(MaterialTheme.colorScheme.background)
             .padding(horizontal = 20.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -42,8 +45,16 @@ fun TimelineScreen(
                 style = MaterialTheme.typography.headlineLarge
             )
         }
-        LazyColumn {
-            itemsIndexed(experiences) { index, item ->
+        Column(
+            Modifier.then(
+                if(isCompactModeEnabledForWeb){
+                    Modifier
+                } else {
+                    Modifier.verticalScroll(rememberScrollState())
+                }
+            )
+        ) {
+            experiences.forEachIndexed { index, item ->
                 TimelineNode(
                     modifier = Modifier.padding(
                         top = if (index == 0) 60.dp else 0.dp,

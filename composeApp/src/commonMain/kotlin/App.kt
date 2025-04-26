@@ -6,25 +6,29 @@ import androidx.compose.foundation.hoverable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.ScaffoldDefaults
-import androidx.compose.material.Text
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,23 +37,30 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import bug_freebio.composeapp.generated.resources.Res
+import bug_freebio.composeapp.generated.resources.ic_close
 import bug_freebio.composeapp.generated.resources.ic_compact
 import bug_freebio.composeapp.generated.resources.ic_cozy
+import bug_freebio.composeapp.generated.resources.ic_file
 import com.example.compose.BioTheme
 import contact.ContactScreen
 import org.jetbrains.compose.resources.painterResource
+import shared.PdfColumn
 import shared.isTabletVersion
+import shared.platform
 import timeline.TimelineScreen
 
 @Composable
 fun App(dynamicThemingAvailable: Boolean) {
     var currentRoute by rememberSaveable { mutableStateOf(NavItem.HOME.label) }
     var isCompactViewEnabledForWeb by rememberSaveable { mutableStateOf(false) }
+    var showResume by rememberSaveable { mutableStateOf(false) }
 
-    if(!isTabletVersion()) {
+    if (!isTabletVersion()) {
         isCompactViewEnabledForWeb = false
     }
 
@@ -103,13 +114,94 @@ fun App(dynamicThemingAvailable: Boolean) {
                         .padding(
                             top = ScaffoldDefaults.contentWindowInsets.asPaddingValues()
                                 .calculateTopPadding() + 20.dp,
-                            end = 30.dp
+                            end = 20.dp
                         )
                         .alpha(if (isTabletVersion()) 1f else 0f),
                     compactViewEnabledForWeb = isCompactViewEnabledForWeb,
                     onClick = {
                         isCompactViewEnabledForWeb = !isCompactViewEnabledForWeb
                     })
+
+                FloatingActionButton(
+                    modifier = Modifier
+                        .padding(bottom = 30.dp, end = 20.dp)
+                        .align(Alignment.BottomEnd),
+                    backgroundColor = MaterialTheme.colorScheme.tertiaryContainer,
+                    onClick = {
+                        showResume = true
+                    },
+                    shape = RoundedCornerShape(15.dp),
+                    content = {
+                        val interactionSource = remember { MutableInteractionSource() }
+                        val showFullTitle by interactionSource.collectIsHoveredAsState()
+
+                        Row(
+                            modifier = Modifier
+                                .padding(horizontal = 10.dp)
+                                .hoverable(interactionSource)
+                                .animateContentSize(
+                                    animationSpec = tween()
+                                ),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                painter = painterResource(Res.drawable.ic_file),
+                                contentDescription = "Resume",
+                                modifier = Modifier
+                                    .size(20.dp)
+                                    .clickable {
+                                        showResume = !showResume
+                                    },
+                                tint = MaterialTheme.colorScheme.onTertiaryContainer
+                            )
+                            if (!isTabletVersion() || showFullTitle) {
+                                Text(
+                                    text = "Resume",
+                                    color = MaterialTheme.colorScheme.onTertiaryContainer,
+                                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                                    fontWeight = FontWeight.SemiBold,
+                                    modifier = Modifier.padding(start=5.dp)
+                                )
+                            }
+                        }
+                    }
+                )
+                if (showResume) {
+                    if (platform() == "android" || platform() == "ios") {
+                        Box(
+                            Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.background)
+                        ) {
+                            PdfColumn(
+                                url = repo + resume_url,
+                                modifier = Modifier.padding(top = 100.dp)
+                                    .fillMaxWidth()
+                                    .background(MaterialTheme.colorScheme.background)
+                            )
+                            Box(
+                                modifier = Modifier
+                                    .padding(15.dp)
+                                    .shadow(10.dp, shape = RoundedCornerShape(10.dp))
+                                    .background(MaterialTheme.colorScheme.tertiaryContainer),
+                            ) {
+                                Icon(
+                                    painter = painterResource(Res.drawable.ic_close),
+                                    contentDescription = "Close",
+                                    modifier = Modifier
+                                        .padding(10.dp)
+                                        .clickable {
+                                            showResume = !showResume
+                                        },
+                                    tint = MaterialTheme.colorScheme.onTertiaryContainer
+                                )
+                            }
+                        }
+                    } else {
+                        PdfColumn(
+                            url = repo + resume_url
+                        )
+                        showResume = false
+                    }
+                }
             }
         }
     }
@@ -127,6 +219,7 @@ fun ResizeViewFAB(
 
     Card(
         modifier = modifier
+            .shadow(10.dp)
             .hoverable(interactionSource)
             .animateContentSize(
                 animationSpec = tween()
@@ -135,7 +228,6 @@ fun ResizeViewFAB(
             },
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer),
         shape = RoundedCornerShape(15.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 10.dp)
     ) {
         Row(
             modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
@@ -167,27 +259,33 @@ fun ResizeViewFAB(
 fun CompactViewForWeb(
     compactViewEnabledForWeb: Boolean
 ) {
-    Column(
+    var height by remember { mutableStateOf(0.dp) }
+    Row(
         modifier = Modifier
             .padding(top = 30.dp)
-            .padding(horizontal = 30.dp),
-    ) {
-        Row {
-            HomeScreen(
-                modifier = Modifier.weight(0.45f),
-                isCompactModeEnabledForWeb = compactViewEnabledForWeb
-            )
-            Box(modifier = Modifier.weight(0.1f), contentAlignment = Alignment.Center) {
-                VerticalDivider(
-                    modifier = Modifier.fillMaxHeight(),
-                    color = MaterialTheme.colorScheme.tertiary,
-                    thickness = 2.dp
-                )
+            .padding(horizontal = 30.dp)
+            .onGloballyPositioned {
+                height = it.size.height.dp * 1.5f
             }
-            TimelineScreen(
-                modifier = Modifier.weight(0.45f),
-                isCompactModeEnabledForWeb = compactViewEnabledForWeb
+            .verticalScroll(rememberScrollState()),
+    ) {
+        HomeScreen(
+            modifier = Modifier.weight(0.45f),
+            isCompactModeEnabledForWeb = compactViewEnabledForWeb
+        )
+        Box(
+            modifier = Modifier.weight(0.1f),
+            contentAlignment = Alignment.Center
+        ) {
+            VerticalDivider(
+                modifier = Modifier.wrapContentWidth().height(height),
+                color = MaterialTheme.colorScheme.tertiary,
+                thickness = 2.dp
             )
         }
+        TimelineScreen(
+            modifier = Modifier.weight(0.45f),
+            isCompactModeEnabledForWeb = compactViewEnabledForWeb
+        )
     }
 }
