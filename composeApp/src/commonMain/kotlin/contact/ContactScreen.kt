@@ -59,7 +59,8 @@ fun ContactScreen(modifier: Modifier = Modifier) {
         modifier = modifier.padding(horizontal = 30.dp).verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        ContactSection(Modifier.padding(top = 40.dp))
+        ContactSection(Modifier.padding(top = 30.dp))
+        Spacer(Modifier.height(50.dp))
     }
 }
 
@@ -245,8 +246,6 @@ fun ContactSection(modifier: Modifier = Modifier) {
             )
         }
     }
-
-    Spacer(Modifier.height(50.dp))
 }
 
 @Composable

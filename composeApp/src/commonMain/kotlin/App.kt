@@ -7,6 +7,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,6 +17,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -25,6 +27,8 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.ScaffoldDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CardElevation
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
@@ -38,7 +42,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.layout.SubcomposeLayout
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import bug_freebio.composeapp.generated.resources.Res
@@ -90,7 +97,8 @@ fun App(dynamicThemingAvailable: Boolean) {
         ) {
             Box(
                 Modifier.fillMaxSize()
-                    .padding(it),
+                    .padding(it)
+                ,
             ) {
                 if (!isCompactViewEnabledForWeb) {
                     Box(
@@ -213,13 +221,11 @@ fun ResizeViewFAB(
     compactViewEnabledForWeb: Boolean,
     onClick: () -> Unit
 ) {
-
     val interactionSource = remember { MutableInteractionSource() }
     val showFullTitle by interactionSource.collectIsHoveredAsState()
 
-    Card(
+    ElevatedCard(
         modifier = modifier
-            .shadow(10.dp)
             .hoverable(interactionSource)
             .animateContentSize(
                 animationSpec = tween()
@@ -227,7 +233,7 @@ fun ResizeViewFAB(
                 onClick()
             },
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer),
-        shape = RoundedCornerShape(15.dp),
+        shape = RoundedCornerShape(10.dp),
     ) {
         Row(
             modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
@@ -260,32 +266,42 @@ fun CompactViewForWeb(
     compactViewEnabledForWeb: Boolean
 ) {
     var height by remember { mutableStateOf(0.dp) }
-    Row(
+    val density = LocalDensity.current
+
+    LazyColumn(
         modifier = Modifier
-            .padding(top = 30.dp)
             .padding(horizontal = 30.dp)
-            .onGloballyPositioned {
-                height = it.size.height.dp * 1.5f
-            }
-            .verticalScroll(rememberScrollState()),
+           ,
     ) {
-        HomeScreen(
-            modifier = Modifier.weight(0.45f),
-            isCompactModeEnabledForWeb = compactViewEnabledForWeb
-        )
-        Box(
-            modifier = Modifier.weight(0.1f),
-            contentAlignment = Alignment.Center
-        ) {
-            VerticalDivider(
-                modifier = Modifier.wrapContentWidth().height(height),
-                color = MaterialTheme.colorScheme.tertiary,
-                thickness = 2.dp
-            )
+        item {
+            Row(Modifier.padding(top = 30.dp)) {
+                HomeScreen(
+                    modifier = Modifier.weight(0.45f).onSizeChanged {
+                       density.run{
+                           height = it.height.toDp()
+                        }
+                    },
+                    isCompactModeEnabledForWeb = compactViewEnabledForWeb
+                )
+                Box(
+                    modifier = Modifier.weight(0.1f),
+                    contentAlignment = Alignment.Center
+                ) {
+                    VerticalDivider(
+                        modifier = Modifier.wrapContentWidth().height(height),
+                        color = MaterialTheme.colorScheme.tertiary,
+                        thickness = 2.dp
+                    )
+                }
+                TimelineScreen(
+                    modifier = Modifier
+                        .weight(0.45f),
+                    isCompactModeEnabledForWeb = compactViewEnabledForWeb
+                )
+            }
         }
-        TimelineScreen(
-            modifier = Modifier.weight(0.45f),
-            isCompactModeEnabledForWeb = compactViewEnabledForWeb
-        )
+        item{
+            Spacer(Modifier.height(60.dp))
+        }
     }
 }

@@ -1,13 +1,9 @@
 package timeline
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.rememberScrollableState
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
@@ -34,20 +30,18 @@ fun TimelineScreen(
             .padding(horizontal = 20.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        if (isCompactModeEnabledForWeb) {
-            Text(
-                text = "The Road So Far",
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(vertical = 30.dp).fillMaxWidth(),
-                color = MaterialTheme.colorScheme.primary,
-                letterSpacing = 1.2.sp,
-                fontWeight = FontWeight.SemiBold,
-                style = MaterialTheme.typography.headlineLarge
-            )
-        }
+        Text(
+            text = "The Road So Far",
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(top = 30.dp, bottom = if(!isCompactModeEnabledForWeb) 30.dp else 0.dp).fillMaxWidth(),
+            color = MaterialTheme.colorScheme.primary,
+            letterSpacing = 1.2.sp,
+            fontWeight = FontWeight.SemiBold,
+            style = MaterialTheme.typography.headlineLarge
+        )
         Column(
             Modifier.then(
-                if(isCompactModeEnabledForWeb){
+                if (isCompactModeEnabledForWeb) {
                     Modifier
                 } else {
                     Modifier.verticalScroll(rememberScrollState())
@@ -57,9 +51,10 @@ fun TimelineScreen(
             experiences.forEachIndexed { index, item ->
                 TimelineNode(
                     modifier = Modifier.padding(
-                        top = if (index == 0) 60.dp else 0.dp,
+                        top = if (index == 0) 30.dp else 0.dp,
                         bottom = if (index == experiences.lastIndex) 60.dp else 0.dp
                     ),
+                    spacerBetweenNodes = if (isCompactModeEnabledForWeb) 60.dp else 40.dp,
                     experience = item,
                     circleParameters = CircleParameters(
                         20.dp,
