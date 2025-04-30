@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -84,12 +85,25 @@ android {
     sourceSets["main"].res.srcDirs("src/androidMain/res")
     sourceSets["main"].resources.srcDirs("src/commonMain/resources")
 
+
     defaultConfig {
         applicationId = "org.appsmith.bio"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
+    }
+
+    signingConfigs {
+        val keyStoreProps: Properties = Properties().apply {
+            rootProject.file("keystore.properties").reader().use(::load)
+        }
+        create("release") {
+                storeFile = keyStoreProps["storeFile"]?.let { file(it) }
+                storePassword = (keyStoreProps["storePassword"] ?: "").toString()
+                keyAlias = (keyStoreProps["keyAlias"] ?: "").toString()
+                keyPassword = (keyStoreProps["keyPassword"] ?: "").toString()
+        }
     }
     packaging {
         resources {
@@ -99,6 +113,7 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
+            signingConfig = signingConfigs.getByName("release")
         }
     }
     compileOptions {
