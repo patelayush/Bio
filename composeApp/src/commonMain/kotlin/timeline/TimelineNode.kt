@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -35,12 +36,12 @@ fun TimelineNode(
 ) {
     val verticalLineColor = MaterialTheme.colorScheme.secondary
     val horizontalLineColor = MaterialTheme.colorScheme.inversePrimary
-    val textMeasurer = rememberTextMeasurer()
     val textYear =
         MaterialTheme.typography.labelSmall.copy(color = MaterialTheme.colorScheme.onPrimaryContainer)
-    val yearLayoutResult = remember(experience.year) {
-        textMeasurer.measure(experience.year.toString(), textYear)
-    }
+    val yearLayoutResult = rememberTextMeasurer(256).measure(
+        text = experience.year.toString(),
+        style = textYear
+    )
     val showInLeft = position % 2 == 0
     Box(
         modifier = modifier
@@ -106,9 +107,7 @@ fun TimelineNode(
                     )
                 )
                 drawText(
-                    textMeasurer = textMeasurer,
-                    text = experience.year.toString(),
-                    style = textYear,
+                    textLayoutResult = yearLayoutResult,
                     topLeft = Offset(
                         centerWidth - yearLayoutResult.size.width / 2,
                         if (isLastNode) centerHeight - yearLayoutResult.size.height / 2 else centerHeight - 16.dp.toPx() - yearLayoutResult.size.height / 2
