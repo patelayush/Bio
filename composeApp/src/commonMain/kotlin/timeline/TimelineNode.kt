@@ -36,8 +36,7 @@ fun TimelineNode(
 ) {
     val verticalLineColor = MaterialTheme.colorScheme.secondary
     val horizontalLineColor = MaterialTheme.colorScheme.inversePrimary
-    val textYear =
-        MaterialTheme.typography.labelSmall.copy(color = MaterialTheme.colorScheme.onPrimaryContainer)
+    val textYear = MaterialTheme.typography.labelSmall.copy(color = MaterialTheme.colorScheme.onPrimaryContainer)
     val yearLayoutResult = rememberTextMeasurer(256).measure(
         text = experience.year.toString(),
         style = textYear
