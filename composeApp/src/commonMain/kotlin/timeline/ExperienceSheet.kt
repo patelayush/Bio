@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import components.BoldText
 import model.Experience
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -109,7 +110,7 @@ fun ExperienceDetails(experience: Experience) {
                         color = MaterialTheme.colorScheme.secondary,
                         fontSize = MaterialTheme.typography.bodyMedium.fontSize,
                     )
-                    Text(
+                    BoldText(
                         text = it,
                         color = MaterialTheme.colorScheme.secondary,
                         fontSize = MaterialTheme.typography.bodyMedium.fontSize
