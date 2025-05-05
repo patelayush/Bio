@@ -16,7 +16,6 @@ This app serves as a dynamic and always-accessible representation of my professi
 * **Skills Showcase:** A visually organized display of my key technical and soft skills.
 * **Projects Portfolio:** A dedicated section featuring my projects, with:
     * Featured projects highlighted in a carousel view.
-    * A comprehensive grid view of all projects.
     * Clear presentation of project titles and brief descriptions.
 * **Experience Timeline:** A visual timeline of my career history and educational milestones.
 * **Contact Information:** Easy access to my contact details (email, LinkedIn, etc.).
@@ -24,24 +23,10 @@ This app serves as a dynamic and always-accessible representation of my professi
 
 ## Screenshots
 
-![App Homepage](https://github.com/patelayush/Bug-Free-Bio/blob/master/screenshots/Screenshot_20250422_225258.png)
+<img src="https://github.com/patelayush/Bug-Free-Bio/blob/master/screenshots/Screenshot_20250422_225258.png" width=300><img src="https://github.com/patelayush/Bug-Free-Bio/blob/master/screenshots/Screenshot_20250422_225314.png" width=300><img src="https://github.com/patelayush/Bug-Free-Bio/blob/master/screenshots/Screenshot_20250422_225328.png" width=300>
 
 ## Technologies Used
 
 * **Kotlin:** The primary programming language.
 * **Compose Multiplatform:** The declarative UI framework for building native-like UIs across platforms.
 * **Android SDK:** For the Android-specific build.
-
-## Getting Started (For Developers - Optional, remove if this is just for showcasing)
-
-If you're a developer interested in contributing or building upon this project, here's how to get started:
-
-1.  **Prerequisites:**
-    * [Link to Kotlin SDK installation guide]
-    * [Link to Android Studio installation guide]
-    * [Link to Java Development Kit (JDK) installation guide]
-
-2.  **Clone the Repository:**
-   ```bash
-   git clone https://github.com/patelayush/Bug-Free-Bio
-   cd bug-free-bio
