@@ -1,4 +1,4 @@
-# Bug Free Bio - Your Professional Portfolio App
+# Bug-Free Bio - Your Professional Portfolio App
 
 [![Compose Multiplatform](https://img.shields.io/badge/Compose%20Multiplatform-1.7.x-brightgreen)](https://kotlinlang.org/docs/compose-multiplatform.html)
 [![Platform](https://img.shields.io/badge/platform-Android%20%7C%20iOS%20%7C%20Desktop%20%7C%20Web-lightgrey)](https://kotlinlang.org/docs/compose-multiplatform.html)
@@ -6,7 +6,7 @@
 
 ## Overview
 
-**Bug Free Bio** is a personal portfolio application designed to showcase my skills, career experience, and projects in a clean, engaging, and user-friendly way. Built with **Compose Multiplatform**, this app aims to provide a seamless and consistent experience across various platforms (currently targeting Android, with potential for Desktop and Web).
+**Bug-Free Bio** is a personal portfolio application designed to showcase my skills, career experience, and projects in a clean, engaging, and user-friendly way. Built with **Compose Multiplatform**, this app aims to provide a seamless and consistent experience across various platforms.
 
 This app serves as a dynamic and always-accessible representation of my professional journey and capabilities.
 
