@@ -1,5 +1,5 @@
+import com.codingfeline.buildkonfig.compiler.FieldSpec
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
@@ -10,11 +10,13 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.buildkonfig)
 }
+
+val versionName = "1.0"
 
 kotlin {
     androidTarget {
-        @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
         }
@@ -77,6 +79,14 @@ kotlin {
     }
 }
 
+buildkonfig {
+    packageName = "org.appsmith.bio"
+
+    defaultConfigs {
+        buildConfigField(FieldSpec.Type.STRING, "version", versionName)
+    }
+}
+
 android {
     namespace = "org.appsmith.bio"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
@@ -91,7 +101,7 @@ android {
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
-        versionName = "1.0"
+        versionName = versionName
     }
 
     signingConfigs {

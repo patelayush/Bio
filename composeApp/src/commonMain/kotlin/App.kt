@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -18,16 +17,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.ScaffoldDefaults
-import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CardElevation
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -42,18 +37,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.layout.SubcomposeLayout
-import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.max
+import androidx.compose.ui.unit.sp
 import bug_freebio.composeapp.generated.resources.Res
 import bug_freebio.composeapp.generated.resources.ic_close
 import bug_freebio.composeapp.generated.resources.ic_compact
 import bug_freebio.composeapp.generated.resources.ic_cozy
 import bug_freebio.composeapp.generated.resources.ic_file
 import com.example.compose.BioTheme
+import components.BottomNavigationBar
+import components.NavItem
 import contact.ContactScreen
 import org.jetbrains.compose.resources.painterResource
 import shared.PdfColumn
@@ -110,6 +107,7 @@ fun App(dynamicThemingAvailable: Boolean) {
                             NavItem.HOME.label -> HomeScreen(isCompactModeEnabledForWeb = isCompactViewEnabledForWeb)
                             NavItem.EXPERIENCE.label -> TimelineScreen(isCompactModeEnabledForWeb = isCompactViewEnabledForWeb)
                             NavItem.CONTACT.label -> ContactScreen(Modifier.fillMaxSize())
+                            NavItem.ABOUT.label -> AboutScreen(Modifier.fillMaxSize())
                         }
                     }
                 } else {
@@ -270,15 +268,15 @@ fun CompactViewForWeb(
 
     LazyColumn(
         modifier = Modifier
-            .padding(horizontal = 30.dp)
-           ,
+            .padding(horizontal = 30.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         item {
             Row(Modifier.padding(top = 30.dp)) {
                 HomeScreen(
                     modifier = Modifier.weight(0.45f).onSizeChanged {
                        density.run{
-                           height = it.height.toDp()
+                           height = max(height, it.height.toDp())
                         }
                     },
                     isCompactModeEnabledForWeb = compactViewEnabledForWeb
@@ -295,10 +293,25 @@ fun CompactViewForWeb(
                 }
                 TimelineScreen(
                     modifier = Modifier
-                        .weight(0.45f),
+                        .weight(0.45f).onSizeChanged {
+                            density.run{
+                                height = max(height, it.height.toDp())
+                            }
+                        },
                     isCompactModeEnabledForWeb = compactViewEnabledForWeb
                 )
             }
+        }
+        item{
+            Text(
+                text = "About",
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.padding(top=50.dp),
+                letterSpacing = 1.2.sp,
+                fontWeight = FontWeight.SemiBold,
+                style = MaterialTheme.typography.headlineSmall
+            )
+            AboutScreenContent(modifier = Modifier.padding(top=30.dp))
         }
         item{
             Spacer(Modifier.height(60.dp))

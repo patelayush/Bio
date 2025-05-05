@@ -1,3 +1,5 @@
+package components
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,6 +15,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import bug_freebio.composeapp.generated.resources.Res
+import bug_freebio.composeapp.generated.resources.ic_about
 import bug_freebio.composeapp.generated.resources.ic_contact_us
 import bug_freebio.composeapp.generated.resources.ic_home
 import bug_freebio.composeapp.generated.resources.ic_timeline
@@ -74,5 +77,9 @@ enum class NavItem(
     CONTACT(
         label = "Contact",
         icon = Res.drawable.ic_contact_us,
+    ),
+    ABOUT(
+        label = "About",
+        icon = Res.drawable.ic_about,
     ),
 }

@@ -2,7 +2,9 @@ package timeline
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -15,6 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import components.ProjectSection
 import model.experiences
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -52,7 +55,7 @@ fun TimelineScreen(
                 TimelineNode(
                     modifier = Modifier.padding(
                         top = if (index == 0) 30.dp else 0.dp,
-                        bottom = if (index == experiences.lastIndex) 60.dp else 0.dp
+                        bottom = if (index == experiences.lastIndex) 30.dp else 0.dp
                     ),
                     spacerBetweenNodes = if (isCompactModeEnabledForWeb) 60.dp else 40.dp,
                     experience = item,
@@ -80,6 +83,15 @@ fun TimelineScreen(
                 )
             }
         }
+
+        if(isCompactModeEnabledForWeb) {
+            ProjectSection(
+                modifier = Modifier,
+                isCompactModeEnabledForWeb = isCompactModeEnabledForWeb
+            )
+        }
+
+        Spacer(Modifier.height(30.dp))
     }
 }
 

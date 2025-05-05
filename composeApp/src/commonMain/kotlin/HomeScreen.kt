@@ -24,6 +24,8 @@ import androidx.compose.ui.unit.sp
 import bug_freebio.composeapp.generated.resources.Res
 import bug_freebio.composeapp.generated.resources.profile_pic
 import components.BoldText
+import components.ProjectSection
+import components.SkillSection
 import contact.ContactSection
 import model.experiences
 import org.jetbrains.compose.resources.painterResource
@@ -82,7 +84,7 @@ fun HomeScreen(
             )
 
             BoldText(
-                text = "$introductionText1**b${experiences[1].title ?: "Android Engineer"}**)$introductionText2",
+                text = "$introductionText1**(${experiences[1].title ?: "Android Engineer"})**$introductionText2",
                 textAlign = TextAlign.Start,
                 modifier = Modifier.fillMaxWidth().padding(top = 30.dp),
                 color = MaterialTheme.colorScheme.secondary,
@@ -95,7 +97,7 @@ fun HomeScreen(
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.primary,
                 style = if (isCompactModeEnabledForWeb) MaterialTheme.typography.headlineLarge else MaterialTheme.typography.headlineSmall,
-                letterSpacing = 1.2.sp,
+                letterSpacing = 1.1.sp,
                 modifier = Modifier.fillMaxWidth().padding(top = 40.dp),
             )
 
@@ -104,6 +106,13 @@ fun HomeScreen(
                     .fillMaxWidth()
                     .padding(top = 20.dp)
             )
+
+            if(!isCompactModeEnabledForWeb) {
+                ProjectSection(
+                    modifier = Modifier,
+                    isCompactModeEnabledForWeb = isCompactModeEnabledForWeb
+                )
+            }
 
             if (isCompactModeEnabledForWeb) {
                 ContactSection(Modifier.padding(top = 50.dp))
