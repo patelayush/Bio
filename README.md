@@ -1,9 +1,8 @@
 # Bug Free Bio - Your Professional Portfolio App
 
 [![Platform](https://img.shields.io/badge/platform-Android%20%7C%20Desktop%20%7C%20Web-lightgrey)](https://kotlinlang.org/docs/compose-multiplatform.html)
-[![Kotlin](https://img.shields.io/badge/kotlin-1.9.x-blueviolet)](https://kotlinlang.org/)
-[![Compose Multiplatform](https://img.shields.io/badge/Compose%20Multiplatform-1.6.x-brightgreen)](https://kotlinlang.org/docs/compose-multiplatform.html)
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Kotlin](https://img.shields.io/badge/kotlin-2.1.x-blueviolet)](https://kotlinlang.org/)
+[![Compose Multiplatform](https://img.shields.io/badge/Compose%20Multiplatform-1.7.x-brightgreen)](https://kotlinlang.org/docs/compose-multiplatform.html)
 
 ## Overview
 
