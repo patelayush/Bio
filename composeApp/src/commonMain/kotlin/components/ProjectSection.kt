@@ -4,12 +4,12 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -37,8 +37,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.max
 import androidx.compose.ui.unit.sp
 import bug_freebio.composeapp.generated.resources.Res
-import bug_freebio.composeapp.generated.resources.ic_compose_multiplatform
 import bug_freebio.composeapp.generated.resources.github_mark
+import bug_freebio.composeapp.generated.resources.ic_compose_multiplatform
 import model.Project
 import model.projectsList
 import org.jetbrains.compose.resources.painterResource
@@ -79,10 +79,9 @@ fun FeaturedProjectsCarousel(
         modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight(),
-        pageSpacing = 20.dp,
-        beyondViewportPageCount = pagerState.pageCount,
-        ) { page ->
-        val project = projects[page]
+        pageSpacing = 30.dp,
+        beyondViewportPageCount = projects.size,
+    ) { page ->
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -97,55 +96,88 @@ fun FeaturedProjectsCarousel(
                 containerColor = MaterialTheme.colorScheme.secondaryContainer
             )
         ) {
-            Column(
+            val project = projects[page]
+            Box(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxWidth()
+                    .heightIn(min = minHeight)
                     .padding(20.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                contentAlignment = Alignment.Center
             ) {
-                Text(
-                    text = project.title,
-                    style = MaterialTheme.typography.titleLarge,
-                    textAlign = TextAlign.Center,
-                    letterSpacing = 1.1.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                )
-
-                BoldText(
-                    text = project.shortDescription,
-                    fontSize = MaterialTheme.typography.bodyMedium.fontSize,
-                    textAlign = TextAlign.Center,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                )
-
-                Row(
-                    modifier = Modifier.padding(top = 10.dp),
-                    horizontalArrangement = Arrangement.spacedBy(10.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                Column(
+                    Modifier
+                        .then(
+                            if (project.tools != null) {
+                                Modifier.fillMaxHeight()
+                            } else {
+                                Modifier.wrapContentHeight()
+                            }
+                        ),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
-                    if(project.githubLink != null) {
-                        Image(
-                            painter = painterResource(Res.drawable.github_mark),
-                            contentDescription = "Github",
-                            modifier = Modifier
-                                .clickable {
-                                    onLinkClick(project.githubLink)
-                                }
-                                .size(24.dp),
+                    Text(
+                        text = project.title,
+                        style = MaterialTheme.typography.titleLarge,
+                        textAlign = TextAlign.Center,
+                        letterSpacing = 1.1.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                    )
+
+                    if (project.shortDescription != null) {
+                        BoldText(
+                            text = project.shortDescription,
+                            fontSize = MaterialTheme.typography.bodyMedium.fontSize,
+                            textAlign = TextAlign.Center,
+                            color = MaterialTheme.colorScheme.onSecondaryContainer
                         )
                     }
-                    if(project.webLink != null) {
-                        Image(
-                            painter = painterResource(Res.drawable.ic_compose_multiplatform),
-                            contentDescription = "Github",
-                            modifier = Modifier
-                                .clickable {
-                                    onLinkClick(project.webLink)
-                                }
-                                .size(30.dp),
+                    if (project.tools != null) {
+                        val skillColorSet = getSkillColorSet().toMutableSet()
+                        skillColorSet.remove(
+                            Pair(
+                                MaterialTheme.colorScheme.secondaryContainer,
+                                MaterialTheme.colorScheme.onSecondaryContainer
+                            )
                         )
+                        SkillSection(
+                            modifier = Modifier.fillMaxWidth(),
+                            skills = project.tools,
+                            skillColorSet = remember { skillColorSet }
+                        )
+                    }
+                    Box(Modifier.fillMaxHeight(), contentAlignment = Alignment.BottomCenter) {
+                        Row(
+                            modifier = Modifier.padding(top = 10.dp),
+                            horizontalArrangement = Arrangement.spacedBy(10.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            if (project.githubLink != null) {
+                                Image(
+                                    painter = painterResource(Res.drawable.github_mark),
+                                    contentDescription = "Github",
+                                    modifier = Modifier
+                                        .clickable {
+                                            onLinkClick(project.githubLink)
+                                        }
+                                        .size(24.dp),
+                                )
+                            }
+                            if (project.webLink != null) {
+                                Image(
+                                    painter = painterResource(
+                                        Res.drawable.ic_compose_multiplatform
+                                    ),
+                                    contentDescription = "Web link",
+                                    modifier = Modifier
+                                        .clickable {
+                                            onLinkClick(project.webLink)
+                                        }
+                                        .size(30.dp),
+                                )
+                            }
+                        }
                     }
                 }
             }
@@ -181,10 +213,4 @@ fun IndicatorDot(isSelected: Boolean) {
             .background(color, shape = CircleShape)
             .padding(2.dp)
     )
-}
-
-
-@Composable
-fun ProjectCarouselItem(project: Project, onLinkClick: (String) -> Unit) {
-
 }

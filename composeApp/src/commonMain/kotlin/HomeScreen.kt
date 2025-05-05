@@ -26,6 +26,7 @@ import bug_freebio.composeapp.generated.resources.profile_pic
 import components.BoldText
 import components.ProjectSection
 import components.SkillSection
+import components.skills
 import contact.ContactSection
 import model.experiences
 import org.jetbrains.compose.resources.painterResource
@@ -104,7 +105,8 @@ fun HomeScreen(
             SkillSection(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 20.dp)
+                    .padding(top = 20.dp),
+                skills = skills
             )
 
             if(!isCompactModeEnabledForWeb) {

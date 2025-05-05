@@ -31,30 +31,27 @@ val skills = listOf(
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun SkillSection(modifier: Modifier = Modifier) {
+fun SkillSection(modifier: Modifier = Modifier, skills: List<String>, skillColorSet: Set<Pair<Color, Color>> = getSkillColorSet()) {
     FlowRow(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(10.dp),
-        verticalArrangement = Arrangement.spacedBy(15.dp)
+        verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         skills.forEach { skill ->
-            SkillChip(skill)
+            SkillChip(skill, skillColorSet.random())
         }
     }
 }
 
 @Composable
-fun SkillChip(skill: String) {
-
-    val skillColorSet = getSkillColorSet()
-
+fun SkillChip(skill: String, skillColorSet: Pair<Color, Color>) {
     Card(
         colors = CardDefaults.cardColors(
             containerColor = skillColorSet.first,
         )
     ) {
         Text(
-            style = MaterialTheme.typography.labelLarge,
+            style = MaterialTheme.typography.labelMedium,
             text = skill,
             modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
             color = skillColorSet.second
@@ -63,7 +60,7 @@ fun SkillChip(skill: String) {
 }
 
 @Composable
-fun getSkillColorSet(): Pair<Color, Color> {
+fun getSkillColorSet(): Set<Pair<Color, Color>> {
     val skillColorSet: Set<Pair<Color, Color>> = setOf(
         Pair(
             MaterialTheme.colorScheme.tertiaryContainer,
@@ -79,5 +76,5 @@ fun getSkillColorSet(): Pair<Color, Color> {
         ),
         Pair(MaterialTheme.colorScheme.surfaceContainer, MaterialTheme.colorScheme.onSurface),
     )
-    return skillColorSet.random()
+    return skillColorSet
 }

@@ -43,9 +43,11 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import bug_freebio.composeapp.generated.resources.Res
+import bug_freebio.composeapp.generated.resources.github_mark
 import bug_freebio.composeapp.generated.resources.ic_mail
 import bug_freebio.composeapp.generated.resources.linkedin_logo
 import email
+import githubLink
 import kotlinx.coroutines.launch
 import linkedinLink
 import model.Message
@@ -242,6 +244,26 @@ fun ContactSection(modifier: Modifier = Modifier) {
                 textDecoration = TextDecoration.Underline,
                 modifier = Modifier.clickable {
                     uriHandler.openUri(linkedinLink)
+                }
+            )
+        }
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(top = 10.dp),
+            horizontalArrangement = Arrangement.spacedBy(15.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Image(
+                painter = painterResource(Res.drawable.github_mark),
+                modifier = Modifier.height(MaterialTheme.typography.titleSmall.fontSize.value.dp),
+                contentDescription = "Github",
+            )
+            Text(
+                text = githubLink,
+                fontSize = MaterialTheme.typography.titleSmall.fontSize,
+                color = MaterialTheme.colorScheme.secondary,
+                textDecoration = TextDecoration.Underline,
+                modifier = Modifier.clickable {
+                    uriHandler.openUri(githubLink)
                 }
             )
         }
