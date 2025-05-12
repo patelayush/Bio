@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.sp
 import bug_freebio.composeapp.generated.resources.Res
 import bug_freebio.composeapp.generated.resources.github_mark
 import bug_freebio.composeapp.generated.resources.ic_compose_multiplatform
+import bug_freebio.composeapp.generated.resources.ic_play_store
 import model.Project
 import model.projectsList
 import org.jetbrains.compose.resources.painterResource
@@ -175,6 +176,19 @@ fun FeaturedProjectsCarousel(
                                             onLinkClick(project.webLink)
                                         }
                                         .size(30.dp),
+                                )
+                            }
+                            if (project.playStoreLink != null) {
+                                Image(
+                                    painter = painterResource(
+                                        Res.drawable.ic_play_store
+                                    ),
+                                    contentDescription = "Web link",
+                                    modifier = Modifier
+                                        .clickable {
+                                            onLinkClick(project.playStoreLink)
+                                        }
+                                        .size(24.dp),
                                 )
                             }
                         }
