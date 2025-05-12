@@ -105,7 +105,7 @@ fun HomeScreen(
             SkillSection(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 20.dp),
+                    .padding(top = 10.dp),
                 skills = skills
             )
 

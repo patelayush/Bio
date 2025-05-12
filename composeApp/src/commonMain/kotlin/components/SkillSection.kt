@@ -29,7 +29,6 @@ val skills = listOf(
     "CSS",
 )
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun SkillSection(modifier: Modifier = Modifier, skills: List<String>, skillColorSet: Set<Pair<Color, Color>> = getSkillColorSet()) {
     FlowRow(

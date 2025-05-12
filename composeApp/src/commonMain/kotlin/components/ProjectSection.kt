@@ -57,7 +57,7 @@ fun ProjectSection(modifier: Modifier = Modifier, isCompactModeEnabledForWeb: Bo
             modifier = Modifier.fillMaxWidth().padding(top = 40.dp),
         )
         FeaturedProjectsCarousel(
-            modifier = Modifier.padding(top = 20.dp),
+            modifier = Modifier.padding(top = 10.dp),
             projects = projectsList,
             onLinkClick = {
                 uriHandler.openUri(it)
