@@ -21,6 +21,7 @@ jobs:
 
     - name: Clone Target Repo
       run: |
+        rm -rf ./target-repo
         git clone https://x-access-token:${{ secrets.TARGET_REPO_TOKEN }}@github.com/patelayush/patelayush.github.io.git target-repo
 
     - name: Copy Folder to Target Repo (Preserve README.md)
