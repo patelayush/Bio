@@ -21,40 +21,38 @@ jobs:
 
     - name: Clone Target Repo
       run: |
-        rm -rf /tmp/target-repo
-        git clone https://x-access-token:${{ secrets.TARGET_REPO_TOKEN }}@github.com/patelayush/patelayush.github.io.git /tmp/target-repo
+        rm -rf target-repo
+        git clone https://x-access-token:${{ secrets.TARGET_REPO_TOKEN }}@github.com/patelayush/patelayush.github.io.git target-repo
 
     - name: Copy Folder to Target Repo (Preserve README.md)
       run: |
-        # Backup README.md if it exists
-        if [ -f /tmp/target-repo/README.md ]; then
-          cp /tmp/target-repo/README.md /tmp/README.md
+        cd target-repo
+
+        # Preserve README.md
+        if [ -f README.md ]; then
+          cp README.md ../README_BACKUP.md
         fi
 
-        # Clean target repo except .git
-        find /tmp/target-repo -mindepth 1 -not -name '.git' -exec rm -rf {} +
+        # Clean all contents except .git
+        find . -mindepth 1 -not -name '.git' -exec rm -rf {} +
 
-        # Restore README.md
-        if [ -f /tmp/README.md ]; then
-          cp /tmp/README.md /tmp/target-repo/README.md
+        # Restore README.md if it was preserved
+        if [ -f ../README_BACKUP.md ]; then
+          mv ../README_BACKUP.md README.md
         fi
 
-        # Copy from docs/ to target
-        if [ -d docs ]; then
-          cp -r docs/* /tmp/target-repo/
-        else
-          echo "⚠️ docs/ folder not found — exiting"
-          exit 1
-        fi
+        # Copy docs contents from source repo
+        cp -r ../docs/* .
 
     - name: Commit and Push Changes to Target Repo
       run: |
-        cd /tmp/target-repo
+        cd target-repo
+
         echo "Last synced: $(date)" > .last-sync.txt
 
         git add .
-        git status  # show what's changed
-        git diff --cached  # show diff to debug
+        git status
+        git diff --cached
 
         git commit -m "Sync from source repo: ${{ github.sha }}" || echo "No changes to commit"
         git push
