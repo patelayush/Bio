@@ -46,5 +46,7 @@ jobs:
       run: |
         cd target-repo
         git add .
+        # Force a change so Git detects it
+        echo "Last synced: $(date)" > .last-sync.txt
         git commit -m "Sync from source repo: ${{ github.sha }}" || echo "No changes to commit"
         git push
