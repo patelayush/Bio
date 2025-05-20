@@ -1,4 +1,4 @@
-name: Sync Folder to Another Repository
+name: Sync Folder to Another Repo
 
 on:
   push:
