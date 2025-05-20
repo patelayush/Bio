@@ -3,7 +3,7 @@ name: Sync Folder to Another Repo
 on:
   push:
     branches:
-      - main  # or any branch you want to monitor
+      - main
       - master
 
 jobs:
@@ -25,8 +25,8 @@ jobs:
 
     - name: Copy Folder to Target Repo
       run: |
-        rm -rf patelayush.github.io/
-        cp -r docs/ patelayush.github.io/
+        rm -rf target-repo/*
+        cp -r docs/* target-repo/
 
     - name: Commit and Push Changes
       run: |
