@@ -13,6 +13,8 @@ jobs:
     steps:
     - name: Checkout Source Repo
       uses: actions/checkout@v3
+      with:
+        path: source-repo # Checkout source repo into 'source-repo' folder
 
     - name: Set up Git Config
       run: |
@@ -21,8 +23,8 @@ jobs:
 
     - name: Clone Target Repo
       run: |
-        rm -rf target-repo
         git clone https://x-access-token:${{ secrets.TARGET_REPO_TOKEN }}@github.com/patelayush/patelayush.github.io.git target-repo
+        # No rm -rf needed here if you clone into a new, empty directory
 
     - name: Copy Folder to Target Repo (Preserve README.md)
       run: |
@@ -34,6 +36,7 @@ jobs:
         fi
 
         # Clean all contents except .git
+        # Adjust 'find .' to clean contents of 'target-repo'
         find . -mindepth 1 -not -name '.git' -exec rm -rf {} +
 
         # Restore README.md if it was preserved
@@ -42,7 +45,13 @@ jobs:
         fi
 
         # Copy docs contents from source repo
-        cp -r ../docs/* .
+        # The 'source-repo' folder is now at the same level as 'target-repo'
+        # So, ../source-repo/docs is the correct path
+        if [ -d ../source-repo/docs ]; then
+          cp -r ../source-repo/docs/* .
+        else
+          echo "Warning: Source 'docs' folder not found or is empty. No files copied."
+        fi
 
     - name: Commit and Push Changes to Target Repo
       run: |
