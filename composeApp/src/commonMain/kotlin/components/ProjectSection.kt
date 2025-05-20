@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.max
 import androidx.compose.ui.unit.sp
 import bug_freebio.composeapp.generated.resources.Res
 import bug_freebio.composeapp.generated.resources.github_mark
+import bug_freebio.composeapp.generated.resources.ic_app_store
 import bug_freebio.composeapp.generated.resources.ic_compose_multiplatform
 import bug_freebio.composeapp.generated.resources.ic_play_store
 import model.Project
@@ -183,10 +184,23 @@ fun FeaturedProjectsCarousel(
                                     painter = painterResource(
                                         Res.drawable.ic_play_store
                                     ),
-                                    contentDescription = "Web link",
+                                    contentDescription = "Google PLay link",
                                     modifier = Modifier
                                         .clickable {
                                             onLinkClick(project.playStoreLink)
+                                        }
+                                        .size(24.dp),
+                                )
+                            }
+                            if (project.appleStoreLink != null) {
+                                Image(
+                                    painter = painterResource(
+                                        Res.drawable.ic_app_store
+                                    ),
+                                    contentDescription = "AppStore link",
+                                    modifier = Modifier
+                                        .clickable {
+                                            onLinkClick(project.appleStoreLink)
                                         }
                                         .size(24.dp),
                                 )

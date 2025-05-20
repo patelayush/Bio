@@ -8,6 +8,7 @@ data class Project(
     val githubLink: String? = null,
     val webLink:String?=null,
     val playStoreLink:String?=null,
+    val appleStoreLink:String?=null,
     val tools: List<String>? = null,
 )
 
@@ -18,6 +19,7 @@ val projectsList = listOf(
         githubLink = "$githubLink/FlickCase",
         webLink = "https://patelayush.github.io/FlickCase/",
         playStoreLink = "https://play.google.com/store/apps/details?id=org.appsmith.flickcase",
+        appleStoreLink = "https://apps.apple.com/us/app/flickcase/id6745903913",
         tools = listOf("Compose Multiplatform", "Jetpack Compose", "Kotlin", "Ktor", "Coil"),
     ),
     Project(
