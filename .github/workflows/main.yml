@@ -1,0 +1,35 @@
+name: Sync Folder to Another Repo
+
+on:
+  push:
+    branches:
+      - main  # or any branch you want to monitor
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Source Repo
+      uses: actions/checkout@v3
+
+    - name: Set up Git Config
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+    - name: Clone Target Repo
+      run: |
+        git clone https://x-access-token:${{ secrets.TARGET_REPO_TOKEN }}@github.com/patelayush/patelayush.github.io.git target-repo
+
+    - name: Copy Folder to Target Repo
+      run: |
+        rm -rf patelayush.github.io/
+        cp -r /docs patelayush.github.io/
+
+    - name: Commit and Push Changes
+      run: |
+        cd target-repo
+        git add .
+        git commit -m "Sync from source repo: ${{ github.sha }}" || echo "No changes to commit"
+        git push
