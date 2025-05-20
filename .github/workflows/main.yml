@@ -23,9 +23,22 @@ jobs:
       run: |
         git clone https://x-access-token:${{ secrets.TARGET_REPO_TOKEN }}@github.com/patelayush/patelayush.github.io.git target-repo
 
-    - name: Copy Folder to Target Repo
+    - name: Copy Folder to Target Repo (Preserve README.md)
       run: |
-        rm -rf target-repo/*
+        # Backup README.md if it exists
+        if [ -f target-repo/README.md ]; then
+          cp target-repo/README.md /tmp/README.md
+        fi
+
+        # Clear target repo except .git directory
+        find target-repo -mindepth 1 -not -name '.git' -exec rm -rf {} +
+
+        # Restore README.md
+        if [ -f /tmp/README.md ]; then
+          cp /tmp/README.md target-repo/README.md
+        fi
+
+        # Copy new contents
         cp -r docs/* target-repo/
 
     - name: Commit and Push Changes
