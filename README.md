@@ -1,4 +1,4 @@
-# Bio - My Professional Portfolio App
+# Bug-Free Bio - My Professional Portfolio App
 
 [![Compose Multiplatform](https://img.shields.io/badge/Compose%20Multiplatform-1.7.x-brightgreen)](https://kotlinlang.org/docs/compose-multiplatform.html)
 [![Platform](https://img.shields.io/badge/platform-Android%20%7C%20iOS%20%7C%20Desktop%20%7C%20Web-lightgrey)](https://kotlinlang.org/docs/compose-multiplatform.html)
