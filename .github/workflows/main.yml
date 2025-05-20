@@ -13,55 +13,42 @@ jobs:
     steps:
     - name: Checkout Source Repo
       uses: actions/checkout@v3
-      with:
-        path: source-repo # Checkout source repo into 'source-repo' folder
 
     - name: Set up Git Config
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-    - name: Clone Target Repo
+    - name: Clone Target Repo OUTSIDE source repo
       run: |
-        git clone https://x-access-token:${{ secrets.TARGET_REPO_TOKEN }}@github.com/patelayush/patelayush.github.io.git target-repo
-        # No rm -rf needed here if you clone into a new, empty directory
+        rm -rf ../target-repo
+        git clone https://x-access-token:${{ secrets.TARGET_REPO_TOKEN }}@github.com/patelayush/patelayush.github.io.git ../target-repo
 
     - name: Copy Folder to Target Repo (Preserve README.md)
       run: |
-        cd target-repo
-
-        # Preserve README.md
-        if [ -f README.md ]; then
-          cp README.md ../README_BACKUP.md
+        # Backup README.md if exists
+        if [ -f ../target-repo/README.md ]; then
+          cp ../target-repo/README.md ../README_BACKUP.md
         fi
 
-        # Clean all contents except .git
-        # Adjust 'find .' to clean contents of 'target-repo'
-        find . -mindepth 1 -not -name '.git' -exec rm -rf {} +
+        # Remove all contents except .git
+        find ../target-repo -mindepth 1 -not -name '.git' -exec rm -rf {} +
 
-        # Restore README.md if it was preserved
+        # Restore README.md
         if [ -f ../README_BACKUP.md ]; then
-          mv ../README_BACKUP.md README.md
+          mv ../README_BACKUP.md ../target-repo/README.md
         fi
 
-        # Copy docs contents from source repo
-        # The 'source-repo' folder is now at the same level as 'target-repo'
-        # So, ../source-repo/docs is the correct path
-        if [ -d ../source-repo/docs ]; then
-          cp -r ../source-repo/docs/* .
-        else
-          echo "Warning: Source 'docs' folder not found or is empty. No files copied."
-        fi
+        # Copy files from docs/ into target repo
+        cp -r docs/* ../target-repo/
 
-    - name: Commit and Push Changes to Target Repo
+    - name: Commit and Push Changes
       run: |
-        cd target-repo
+        cd ../target-repo
 
         echo "Last synced: $(date)" > .last-sync.txt
 
         git add .
         git status
-        git diff --cached
-
         git commit -m "Sync from source repo: ${{ github.sha }}" || echo "No changes to commit"
         git push
