@@ -26,8 +26,7 @@ jobs:
 
     - name: Copy Folder to Target Repo
       run: |
-        rm -rf patelayush.github.io/
-        cp -r docs/ patelayush.github.io/
+        cp -r docs/* target-repo
 
     - name: Commit and Push Changes
       run: |
