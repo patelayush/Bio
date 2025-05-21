@@ -195,7 +195,7 @@ fun FeaturedProjectsCarousel(
                             if (project.appleStoreLink != null) {
                                 Image(
                                     painter = painterResource(
-                                        Res.drawable.ic_play_store
+                                        Res.drawable.ic_app_store
                                     ),
                                     contentDescription = "App Store link",
                                     modifier = Modifier
