@@ -22,16 +22,16 @@ jobs:
     - name: Clone Target Repo
       run: |
         rm -rf target-repo
-        git clone https://x-access-token:${{ secrets.TARGET_REPO_TOKEN }}@github.com/patelayush/patelayush.github.io.git target-repo
+        git clone https://x-access-token:${{ secrets.TARGET_REPO_TOKEN }}@github.com/patelayush/patelayush.github.io.git patelayush.github.io
 
     - name: Copy Folder to Target Repo
       run: |
-        rm -rf patelayush.github.io/
-        cp -r docs/ patelayush.github.io/
+        rm -rf patelayush.github.io/*
+        cp -r docs/* patelayush.github.io/*
 
     - name: Commit and Push Changes
       run: |
-        cd target-repo
+        cd patelayush.github.io
         git add .
         git commit -m "Sync from source repo: ${{ github.sha }}" || echo "No changes to commit"
         git push
