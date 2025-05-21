@@ -26,7 +26,6 @@ jobs:
 
     - name: Copy Folder to Target Repo
       run: |
-        rm -rf target-repo
         cp -r docs/* target-repo
 
     - name: Commit and Push Changes
