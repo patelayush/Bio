@@ -22,12 +22,12 @@ jobs:
     - name: Clone Target Repo
       run: |
         rm -rf target-repo
-        git clone https://x-access-token:${{ secrets.TARGET_REPO_TOKEN }}@github.com/patelayush/patelayush.github.io.git patelayush.github.io
+        git clone https://x-access-token:${{ secrets.TARGET_REPO_TOKEN }}@github.com/patelayush/patelayush.github.io.git target-repo
 
     - name: Copy Folder to Target Repo
       run: |
-        rm -rf patelayush.github.io/*
-        cp -r docs/* patelayush.github.io/*
+        rm -rf target-repo
+        cp -r docs/* target-repo
 
     - name: Commit and Push Changes
       run: |
