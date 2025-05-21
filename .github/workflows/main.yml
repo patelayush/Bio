@@ -30,7 +30,7 @@ jobs:
 
     - name: Commit and Push Changes
       run: |
-        cd patelayush.github.io
+        cd target-repo
         git add .
         git commit -m "Sync from source repo: ${{ github.sha }}" || echo "No changes to commit"
         git push
