@@ -3,7 +3,7 @@ name: Sync Folder to Another Repo
 on:
   push:
     branches:
-      - main
+      - main  # or any branch you want to monitor
       - master
 
 jobs:
@@ -19,36 +19,18 @@ jobs:
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-    - name: Clone Target Repo OUTSIDE source repo
+    - name: Clone Target Repo
       run: |
-        rm -rf ../target-repo
-        git clone https://x-access-token:${{ secrets.TARGET_REPO_TOKEN }}@github.com/patelayush/patelayush.github.io.git ../target-repo
+        git clone https://x-access-token:${{ secrets.TARGET_REPO_TOKEN }}@github.com/patelayush/patelayush.github.io.git target-repo
 
-    - name: Copy Folder to Target Repo (Preserve README.md)
+    - name: Copy Folder to Target Repo
       run: |
-        # Backup README.md if exists
-        if [ -f ../target-repo/README.md ]; then
-          cp ../target-repo/README.md ../README_BACKUP.md
-        fi
-
-        # Remove all contents except .git
-        find ../target-repo -mindepth 1 -not -name '.git' -exec rm -rf {} +
-
-        # Restore README.md
-        if [ -f ../README_BACKUP.md ]; then
-          mv ../README_BACKUP.md ../target-repo/README.md
-        fi
-
-        # Copy files from docs/ into target repo
-        cp -r docs/* ../target-repo/
+        rm -rf patelayush.github.io/
+        cp -r docs/ patelayush.github.io/
 
     - name: Commit and Push Changes
       run: |
-        cd ../target-repo
-
-        echo "Last synced: $(date)" > .last-sync.txt
-
+        cd target-repo
         git add .
-        git status
         git commit -m "Sync from source repo: ${{ github.sha }}" || echo "No changes to commit"
         git push
