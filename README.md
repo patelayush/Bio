@@ -10,6 +10,12 @@
 
 This app serves as a dynamic and always-accessible representation of my professional journey and capabilities.
 
+**Check it out on web**
+* [**Web Link**](https://patelayush.github.io/Bug-Free-Bio/)
+  
+**or, Download it**
+* [**Google Play Link**](https://play.google.com/store/apps/details?id=org.appsmith.bio)
+
 ## Features
 
 * **Clean and Intuitive Interface:** A "bug-free" experience focused on clear and easy navigation.
